@@ -65,10 +65,6 @@ async def pinhandler(update,context):
         await update.message.reply_text("Please send a 4 number which will be your pin")
         return PIN
 
-async def elsehandler(update,context):
-    update.message.reply_text("Please enter a 4 digit pin")
-    return PIN
-
 convhandler = ConversationHandler(
     entry_points=[CommandHandler("start",starthandler)],
     states={
