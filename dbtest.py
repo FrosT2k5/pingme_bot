@@ -23,6 +23,13 @@ def inserttodb(tguserid, tgusername, securitykey):
     db.commit()
     print(dbcursor.rowcount, "record inserted.")
 
+def updatepin(tguserid,securitykey):
+    query = "UPDATE user SET securitykey = %s WHERE tguserid = %s"
+    values = (securitykey,tguserid)
+    dbcursor.execute(query,values)
+    answer = dbcursor.fetchall()
+    return 1
+
 def printfulltable():
     query = "SELECT * FROM user"
     dbcursor.execute(query)
@@ -31,8 +38,8 @@ def printfulltable():
         print(x)
 
 def getusinguserid(userid):
-    query = f"SELECT * FROM user WHERE tguserid='{userid}'"
-    dbcursor.execute(query)
+    query = "SELECT * FROM user WHERE tguserid = %s"
+    dbcursor.execute(query,[userid])
     answer = dbcursor.fetchall()
     print(answer)
     if not answer:
@@ -40,9 +47,11 @@ def getusinguserid(userid):
     else:
         return answer[0]
 
-PIN= 1
 
-async def starthandler(update,context):
+PIN= 1
+RESETPIN=1
+
+async def starthandler(update: Update,context: ContextTypes.DEFAULT_TYPE):
     usrid = update.message.from_user.id
 
     if (getusinguserid(usrid) != 0):
@@ -52,7 +61,7 @@ async def starthandler(update,context):
     await update.message.reply_text("Hey! Send a 4 digit security pin to continue")
     return PIN
 
-async def pinhandler(update,context):
+async def pinhandler(update: Update,context: ContextTypes.DEFAULT_TYPE):
     usrmessage = update.message.text
 
     if re.match("^[0-9]{4}$",usrmessage):
@@ -65,15 +74,51 @@ async def pinhandler(update,context):
         await update.message.reply_text("Please send a 4 number which will be your pin")
         return PIN
 
-convhandler = ConversationHandler(
+async def resethandler(update, context):
+    await update.message.reply_text("Please send new 4 digit pin.")
+    return RESETPIN
+
+async def resetpinhandler(update,context):
+    usrmessage = update.message.text
+    if re.match("^[0-9]{4}$",usrmessage):
+        print("pin: ",usrmessage)
+        updatepin(update.message.from_user.id,usrmessage)
+        await update.message.reply_text("Pin Reset Successfully.")
+        printfulltable()
+        return ConversationHandler.END
+    else:
+        await update.message.reply_text("Please send a 4 number which will be your pin")
+        return RESETPIN
+
+async def getpinhandler(update,context):
+    usrid = update.message.from_user.id
+    pin = getusinguserid(usrid)
+    try:
+        pin = pin[2]
+    except:
+        await update.message.reply_text("Pin: 0")
+        return 0
+    await update.message.reply_text(f"Pin: {pin}")
+   
+startconvhandler = ConversationHandler(
     entry_points=[CommandHandler("start",starthandler)],
     states={
-        PIN: [MessageHandler(filters.TEXT, pinhandler)],
+        PIN: [MessageHandler(filters.TEXT, pinhandler)]
     },
     fallbacks=[]
 )
 
-botapplication.add_handler(convhandler)
+resetconvhandler = ConversationHandler(
+    entry_points=[CommandHandler("resetPin",resethandler)],
+    states={
+        PIN: [MessageHandler(filters.TEXT, resetpinhandler)]
+    },
+    fallbacks=[]
+)
+
+botapplication.add_handler(startconvhandler)
+botapplication.add_handler(resetconvhandler)
+botapplication.add_handler(CommandHandler("getPin",getpinhandler))
 print("Starting Bot")
 botapplication.run_polling(allowed_updates=Update.ALL_TYPES)
 
