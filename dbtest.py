@@ -4,7 +4,7 @@ from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, Conve
 import re
 
 botapplication = ApplicationBuilder().token('2037162393:AAFJFrw4rUKBYLErd10t0qOBYe14AeZqHNA').build()
-db = connector.connect(host="localhost",user="yash",password="test@123",database="test")
+db = connector.connect(host="s4f.h.filess.io",port="3307",user="testproject_madesaved",password="8626661685b803bad8b71fea42758964f2692df5",database="testproject_madesaved")
 
 dbcursor = db.cursor()
 
