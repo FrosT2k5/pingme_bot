@@ -2,6 +2,8 @@ from mysql import connector
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, ConversationHandler, MessageHandler, filters
 import re
+from server import startserver
+import asyncio
 
 botapplication = ApplicationBuilder().token('2037162393:AAFJFrw4rUKBYLErd10t0qOBYe14AeZqHNA').build()
 db = connector.connect(host="s4f.h.filess.io",port="3307",user="testproject_madesaved",password="8626661685b803bad8b71fea42758964f2692df5",database="testproject_madesaved")
@@ -23,9 +25,9 @@ def inserttodb(tguserid, tgusername, securitykey):
     db.commit()
     print(dbcursor.rowcount, "record inserted.")
 
-def updatepin(tguserid,securitykey):
-    query = "UPDATE user SET securitykey = %s WHERE tguserid = %s"
-    values = (securitykey,tguserid)
+def updatepin(tguserid,securitykey,tgusername):
+    query = "UPDATE user SET securitykey = %s,tgusername = %s WHERE tguserid = %s"
+    values = (securitykey,tgusername,tguserid)
     dbcursor.execute(query,values)
     answer = dbcursor.fetchall()
     return 1
@@ -82,7 +84,7 @@ async def resetpinhandler(update,context):
     usrmessage = update.message.text
     if re.match("^[0-9]{4}$",usrmessage):
         print("pin: ",usrmessage)
-        updatepin(update.message.from_user.id,usrmessage)
+        updatepin(update.message.from_user.id,usrmessage,update.message.from_user.username)
         await update.message.reply_text("Pin Reset Successfully.")
         printfulltable()
         return ConversationHandler.END
@@ -116,15 +118,29 @@ resetconvhandler = ConversationHandler(
     fallbacks=[]
 )
 
+"""
 botapplication.add_handler(startconvhandler)
 botapplication.add_handler(resetconvhandler)
 botapplication.add_handler(CommandHandler("getPin",getpinhandler))
 print("Starting Bot")
 botapplication.run_polling(allowed_updates=Update.ALL_TYPES)
+"""
 
+async def botrunner():
+    botapplication.add_handler(startconvhandler)
+    botapplication.add_handler(resetconvhandler)
+    botapplication.add_handler(CommandHandler("getPin",getpinhandler))
+    print("Starting Bot")
 
-#printfulltable()
-#print("FETCH: ",getusinguserid(-323))
+    async with botapplication:
+        await botapplication.initialize()
+        await botapplication.start()
+        await botapplication.updater.start_polling()
+        print("Starting server")
+        await startserver()
+        await botapplication.updater.stop()
+        await botapplication.updater.shutdown()
+        await botapplication.stop()
+        await botapplication.shutdown()
 
-#inserttodb(-2323,"def",2343)
-
+asyncio.run(botrunner())
