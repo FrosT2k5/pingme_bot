@@ -2,8 +2,9 @@ from mysql import connector
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, ConversationHandler, MessageHandler, filters
 import re
-from server import startserver
 import asyncio
+import time
+import uvicorn
 
 botapplication = ApplicationBuilder().token('2037162393:AAFJFrw4rUKBYLErd10t0qOBYe14AeZqHNA').build()
 db = connector.connect(host="s4f.h.filess.io",port="3307",user="testproject_madesaved",password="8626661685b803bad8b71fea42758964f2692df5",database="testproject_madesaved")
@@ -42,6 +43,16 @@ def printfulltable():
 def getusinguserid(userid):
     query = "SELECT * FROM user WHERE tguserid = %s"
     dbcursor.execute(query,[userid])
+    answer = dbcursor.fetchall()
+    print(answer)
+    if not answer:
+        return 0
+    else:
+        return answer[0]
+
+def getusingusername(username):
+    query = "SELECT * FROM user WHERE tgusername = %s"
+    dbcursor.execute(query,[username])
     answer = dbcursor.fetchall()
     print(answer)
     if not answer:
@@ -127,20 +138,22 @@ botapplication.run_polling(allowed_updates=Update.ALL_TYPES)
 """
 
 async def botrunner():
+    from server import startserver
     botapplication.add_handler(startconvhandler)
     botapplication.add_handler(resetconvhandler)
     botapplication.add_handler(CommandHandler("getPin",getpinhandler))
     print("Starting Bot")
 
-    async with botapplication:
-        await botapplication.initialize()
-        await botapplication.start()
-        await botapplication.updater.start_polling()
+    async with botapplication as b:
+        await b.initialize()
+        await b.start()
+        await b.updater.start_polling()
         print("Starting server")
         await startserver()
-        await botapplication.updater.stop()
-        await botapplication.updater.shutdown()
-        await botapplication.stop()
-        await botapplication.shutdown()
+        print("Reached EOL")
+        await b.updater.stop()
+        await b.stop()
+        await b.shutdown()
 
-asyncio.run(botrunner())
+if __name__ == "__main__":
+    asyncio.run(botrunner())
