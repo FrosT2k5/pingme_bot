@@ -1,22 +1,27 @@
 from fastapi import FastAPI,Response,status
 from pydantic import BaseModel
-from dbtest import getusingusername,botapplication
+from bot.sqlhandler import getusingusername
 from telegram.error import Forbidden
 import uvicorn
 
 app = FastAPI()
 
+# Define the sendmessage api json
 class message_model(BaseModel):
     username: str
     message: str
     securitykey: int
 
+# TODO: This function should later serve static send message form
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
+
+# Post method to send message, accepts json with username, message and securitykey
 @app.post("/api/sendmessage")
 async def sendmessage(messagedata: message_model,response: Response):
+    from bot import botapplication # TODO: remove this import and make a function in botapplication to handle this
     messagedict = messagedata.dict()
     uid = getusingusername(messagedict['username'])
 
@@ -45,7 +50,9 @@ async def sendmessage(messagedata: message_model,response: Response):
         response.status_code = status.HTTP_400_BAD_REQUEST
         error = "Unknown error: {e}, please contact the maintainer of bot at Telegram @SuperCosmicBeing"
         return {"status":"error","error": error}
+    
 
+# function to start the fastapi server
 async def startserver():
     config = uvicorn.Config("server:app", port=5000, log_level="info")
     server = uvicorn.Server(config)

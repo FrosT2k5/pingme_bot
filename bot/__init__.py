@@ -1,0 +1,1 @@
+from bot.telegramhandler import registerhandlers,botapplication
