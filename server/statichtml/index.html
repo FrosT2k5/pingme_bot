@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yash please die</title>
+    <style>
+        body {
+            background-color: #f5f5dc;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .question {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .form-container {
+            display: none;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .submit-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .form-container {
+        display: none;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        animation-name: slideIn;
+        animation-duration: 0.5s;
+        animation-timing-function: ease-in-out;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="question">
+            Have you ever needed to send files to your personal Telegram or WhatsApp without logging in?
+        </div>
+        <button class="button" onclick="showForm()">Yes, show me how!</button>
+
+        <div class="form-container" id="form-container">
+            <h2>Send a Message</h2>
+            <form onsubmit="showAlert(); return false;">
+                <label for="telegramUsername">Telegram Username:</label>
+                <input type="text" id="telegramUsername" name="telegramUsername" placeholder="Enter your telegram UserName without the '@'" required><br>
+
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="4" placeholder="Enter your message, if the message is a media file then please enter the link of the file
+We will implement functionality for media files in the future" required></textarea><br>
+
+                <label for="securityKey">Security Key:</label>
+                <input type="text" id="securityKey" minlength="4" maxlength="4"  name="securityKey" placeholder="Input your 4 digit pin which you set in the telegram bot" required><br>
+
+                <button class="submit-button" type="submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showForm() {
+            var formContainer = document.getElementById("form-container");
+            setTimeout(function() {
+                formContainer.style.display = "block";
+            }, 10);
+        }
+
+        function showAlert() {
+            alert("Work has been done!");
+        }
+    </script>
+</body>
+</html>
