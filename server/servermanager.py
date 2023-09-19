@@ -1,4 +1,5 @@
 from fastapi import FastAPI,Response,status
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from bot.sqlhandler import getusingusername
 from telegram.error import Forbidden
@@ -11,12 +12,6 @@ class message_model(BaseModel):
     username: str
     message: str
     securitykey: int
-
-# TODO: This function should later serve static send message form
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
 
 # Post method to send message, accepts json with username, message and securitykey
 @app.post("/api/sendmessage")
@@ -51,6 +46,8 @@ async def sendmessage(messagedata: message_model,response: Response):
         error = "Unknown error: {e}, please contact the maintainer of bot at Telegram @SuperCosmicBeing"
         return {"status":"error","error": error}
     
+# mount the / to statichtml/ folder so the base url opens up the form
+app.mount("/", StaticFiles(directory="server/statichtml/",html=True),name="form")
 
 # function to start the fastapi server
 async def startserver():
