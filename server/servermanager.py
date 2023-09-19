@@ -51,6 +51,6 @@ app.mount("/", StaticFiles(directory="server/statichtml/",html=True),name="form"
 
 # function to start the fastapi server
 async def startserver():
-    config = uvicorn.Config("server:app", port=80, log_level="info")
+    config = uvicorn.Config("server:app", host='0.0.0.0', port=80, log_level="info")
     server = uvicorn.Server(config)
     await server.serve()
