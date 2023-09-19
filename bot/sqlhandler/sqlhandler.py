@@ -4,7 +4,7 @@ from os import environ
 # Get the host, port, user password and database values from environment variables
 db = connector.connect(
     host = environ.get("DB_HOST"),
-    port = environ.get("DB_PORT"),
+    port = int(environ.get("DB_PORT")),
     user = environ.get("DB_USER"),
     password = environ.get("DB_PASSWORD"),
     database = environ.get("DB_NAME")
