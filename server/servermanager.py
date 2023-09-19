@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from bot.sqlhandler import getusingusername
 from telegram.error import Forbidden
 import uvicorn
+from os import environ
 
 app = FastAPI()
 
@@ -51,6 +52,6 @@ app.mount("/", StaticFiles(directory="server/statichtml/",html=True),name="form"
 
 # function to start the fastapi server
 async def startserver():
-    config = uvicorn.Config("server:app", host='0.0.0.0', port=80, log_level="info")
+    config = uvicorn.Config("server:app", host='127.0.0.1', port=int(environ.get("PORT")), log_level="info")
     server = uvicorn.Server(config)
     await server.serve()
