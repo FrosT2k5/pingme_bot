@@ -18,6 +18,7 @@ dbcursor = db.cursor()
 # This function is used to insert record to database for the first time
 def inserttodb(tguserid, tgusername, securitykey):
     query = "SELECT * from user ORDER BY id DESC LIMIT 1"
+    db.commit()
     dbcursor.execute(query)
     answer = dbcursor.fetchall()
     if not answer:
@@ -36,7 +37,7 @@ def updatepin(tguserid,securitykey,tgusername):
     query = "UPDATE user SET securitykey = %s,tgusername = %s WHERE tguserid = %s"
     values = (securitykey,tgusername,tguserid)
     dbcursor.execute(query,values)
-    answer = dbcursor.fetchall()
+    db.commit()
     return 1
 
 
@@ -51,6 +52,7 @@ def printfulltable():
 
 # This function returns full record of user using userid, used to check for already existing user's in bot
 def getusinguserid(userid):
+    db.commit()
     query = "SELECT * FROM user WHERE tguserid = %s"
     dbcursor.execute(query,[userid])
     answer = dbcursor.fetchall()
@@ -62,6 +64,7 @@ def getusinguserid(userid):
 
 # This function returns full record of user using username, used in web api handler
 def getusingusername(username):
+    db.commit()
     query = "SELECT * FROM user WHERE tgusername = %s"
     dbcursor.execute(query,[username])
     answer = dbcursor.fetchall()

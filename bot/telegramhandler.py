@@ -46,7 +46,7 @@ async def resetpinhandler(update,context):
     usrmessage = update.message.text
     if re.match("^[0-9]{4}$",usrmessage):
         updatepin(update.message.from_user.id,usrmessage,update.message.from_user.username)
-        await update.message.reply_text("Pin Reset Successfully.")
+        await update.message.reply_text("Pin Reset Successfully. It will take some time for it to reflect in database.")
         return ConversationHandler.END
     else:
         await update.message.reply_text("Please send a 4 number which will be your pin")
