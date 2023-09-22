@@ -23,20 +23,18 @@ async def startbot():
         if useWebhook:
             print("Using webhook")
             await b.initialize()
-            await b.post_init()
-            await b.start_webhook(
-                listen = "0.0.0.0",
-                port = int(environ.get("PORT")),
-                secret_token = "2037162393:AAFJFrw4rUKBYLErd10t0qOBYe14AeZqHNA",
-                webhook_url = "https://appname.domcloud.io/webhookListener"
-            )
             await b.start()
+            await b.updater.start_webhook(
+                listen = "0.0.0.0",
+                url_path="1",
+                port = int(environ.get("PORT")),
+                secret_token = "frost2k5",
+                webhook_url = "https://pingme.domcloud.io/1"
+            )
             await startserver()
             await b.updater.stop()
             await b.stop()
-            await b.post_stop()
             await b.shutdown()
-            await b.post_shutdown()
 
         else:
             await b.initialize()
