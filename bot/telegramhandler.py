@@ -60,7 +60,7 @@ async def getpinhandler(update,context):
     try:
         pin = pin[2]
     except:
-        await update.message.reply_text("Pin: 0")
+        await update.message.reply_text("Pin: 0, please use /resetPin or restart the bot.")
         return 0
     await update.message.reply_text(f"Pin: {pin}")
    
