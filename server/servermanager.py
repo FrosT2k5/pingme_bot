@@ -47,6 +47,10 @@ async def sendmessage(messagedata: message_model,response: Response):
         error = "Unknown error: {e}, please contact the maintainer of bot at Telegram @SuperCosmicBeing"
         return {"status":"error","error": error}
     
+@app.get("/health")
+async def healthcheck():
+    return {"status":"ok"}
+
 # mount the / to statichtml/ folder so the base url opens up the form
 app.mount("/", StaticFiles(directory="server/statichtml/",html=True),name="form")
 
