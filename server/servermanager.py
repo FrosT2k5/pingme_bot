@@ -44,7 +44,7 @@ async def sendmessage(messagedata: message_model,response: Response):
         return {"status":"error","error":"Unable to send message to bot, did you block the bot?"}
     except Exception as e:
         response.status_code = status.HTTP_400_BAD_REQUEST
-        error = "Unknown error: {e}, please contact the maintainer of bot at Telegram @SuperCosmicBeing"
+        error = f"Unknown error: {e}, please contact the maintainer of bot at Telegram @SuperCosmicBeing"
         return {"status":"error","error": error}
     
 @app.get("/health")
