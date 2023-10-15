@@ -1,75 +1,23 @@
-body {
-    background-color: #f5f5dc;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
+.textInputFields {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: white;
+  border-bottom: 2px solid white;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
+.hoverEffect:hover {
+  border-radius: 5px;
+  transition: 200ms;
 }
 
-.question {
-    font-size: 24px;
-    margin-bottom: 20px;
+.hoverEffect:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: 200ms;
 }
 
-.button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 18px;
-    cursor: pointer;
-    margin-bottom: 20px;
-}
-
-.form-container {
-    display: none;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-input[type="text"],
-input[type="password"],
-textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.submit-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-.form-container {
-display: none;
-background-color: #fff;
-padding: 20px;
-border-radius: 10px;
-animation-name: slideIn;
-animation-duration: 0.5s;
-animation-timing-function: ease-in-out;
-}
-
-@keyframes slideIn {
-from {
-    opacity: 0;
-    transform: translateY(20px);
-}
-to {
-    opacity: 1;
-    transform: translateY(0);
-}
+.text-area {
+  height: 100%;
 }

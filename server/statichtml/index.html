@@ -1,37 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yash please die</title>
+    <title>Ping Me Bot - Chat Client</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="styles/main.css">
 </head>
 
-<body>
-    <div class="container">
-        <div class="question">
-            Have you ever needed to send files to your personal Telegram without logging in?
-        </div>
-        <button class="button" onclick="showForm()">Yes, show me how!</button>
-
+<body class="bg-dark text-white">
+    <div class="container p-5">
         <div class="form-container" id="form-container">
-            <h2>Send a Message</h2>
+            <div class="row">
+                <div class="col-12">
+                    <h1>
+                        Ping Me Bot
+                    </h1>
+                    <h4>
+                        Send Message
+                    </h4>
+                </div>
+            </div>
             <form name="messageForm" onsubmit="sendMessage(); return false;">
-                <label for="telegramUsername">Telegram Username:</label>
-                <input type="text" id="telegramUsername" name="telegramUsername" placeholder="Enter your telegram UserName without the '@'" required><br>
+                <div class="row m-3">
+                    <div class="col-12 col-lg-6 col-md-6 col-sm-12 mt-3 p-3 hoverEffect">
+                        <input class="w-100 p-3 textInputFields" type="text" id="telegramUsername"
+                            name="telegramUsername" placeholder="Enter your username" required autocomplete="off">
+                        <p class="text-danger m-0">
+                            Enter your username without '@'
+                        </p>
+                        <br>
+                    </div>
+                    <div class="col-12 col-lg-6 col-md-6 col-sm-12 mt-3 p-3 hoverEffect">
+                        <input class="w-100 p-3 textInputFields" type="password" id="securityKey" minlength="4"
+                            maxlength="4" name="securityKey" placeholder="Enter your 4 Digit Security PIN" required
+                            autocomplete="off">
+                        <p class="text-danger m-0">
+                            Enter the four-digit security code you created in the Telegram bot.
+                        </p>
+                        <br>
+                    </div>
+                </div>
 
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" rows="4" placeholder="Enter your message, if the message is a media file then please enter the link of the file
-We will implement functionality for media files in the future" required></textarea><br>
+                <div class="row m-3">
+                    <div class="col-12 col-lg-12 col-md-12 col-sm-12 mt-3 p-3 hoverEffect">
+                        <textarea class="w-100 p-3 textInputFields text-area" cols="20" id="message" name="message"
+                            placeholder="Enter your message, and if it is a media file, please include the URL to the file."
+                            required></textarea>
+                        <br>
+                    </div>
+                    <p class="text-danger">
+                        to upload files, you can upload it on <a href="https://ufile.io">ufile.io</a> or <a
+                            href="https://oshi.at/">oshi.at</a> and drop the link in
+                        the message
+                    </p>
+                </div>
 
-                <label for="securityKey">Security Key:</label>
-                <input type="text" id="securityKey" minlength="4" maxlength="4"  name="securityKey" placeholder="Input your 4 digit pin which you set in the telegram bot" required><br>
-
-                <button class="submit-button" type="submit" id="submit-button">Send Message</button>
+                <div class="row m-3">
+                    <button class="submit-button p-3 btn btn-dark" type="submit" id="submit-button">Send
+                        Message</button>
+                </div>
             </form>
         </div>
     </div>
 
     <script type="text/javascript" src="js/form.js"></script>
 </body>
+
 </html>
