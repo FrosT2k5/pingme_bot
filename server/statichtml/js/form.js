@@ -1,10 +1,3 @@
-function showForm() {
-    var formContainer = document.getElementById("form-container");
-    setTimeout(function() {
-        formContainer.style.display = "block";
-    }, 10);
-}
-
 async function sendMessage() {
     const hostName = window.location.origin;
     let messageForm = document.forms['messageForm']
