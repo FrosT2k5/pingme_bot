@@ -1,5 +1,6 @@
 from fastapi import FastAPI,Response,status
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from bot.sqlhandler import getusingusername
 from telegram.error import Forbidden
@@ -7,6 +8,12 @@ import uvicorn
 from os import environ
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Define the sendmessage api json
 class message_model(BaseModel):
