@@ -2,14 +2,13 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, ConversationHandler, MessageHandler, filters
 from bot.sqlhandler import *
 import re
-from os import environ
 
 # Constants used in conversation handlers
 PIN=1
 RESETPIN=1
 
 # bot application object, used in sqlhandler so declared globally
-botapplication = ApplicationBuilder().token(environ.get("BOT_TOKEN")).build()
+botapplication = ApplicationBuilder().token('2037162393:AAFJFrw4rUKBYLErd10t0qOBYe14AeZqHNA').build()
 
 
 # /start conversation handler, ideally returns to pinhandler conversation function
@@ -64,7 +63,7 @@ async def getpinhandler(update,context):
         return 0
     await update.message.reply_text(f"Pin: {pin}")
    
-def registerhandlers(botapplication):
+async def registerhandlers(botapplication):
     # First define the conversation handlers
     startconvhandler = ConversationHandler(
         entry_points=[CommandHandler("start",starthandler)],
