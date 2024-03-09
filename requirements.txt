@@ -3,3 +3,4 @@ uvicorn[standard]
 mysql-connector-python
 python-telegram-bot
 python-telegram-bot[webhooks]
+python-multipart
