@@ -55,7 +55,7 @@ function listSelectedFiles() {
 
     warningText = document.createElement("p");
     warningText.setAttribute("class","text-danger");
-    warningText.textContent = "Note that it will sometime to forward your file after upload progress is 100%. So please don't close this tab until you get status."
+    warningText.textContent = "Note that it will take sometime to forward your file after upload progress is 100%. So please don't close this tab until you get status."
     listElement.appendChild(warningText)
   }
 }
