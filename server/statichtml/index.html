@@ -70,19 +70,29 @@
                 <div class="row m-3">
                     <div class="col-12 col-lg-12 col-md-12 col-sm-12 mt-3 p-3 hoverEffect">
                         <textarea class="w-100 p-3 textInputFields text-area" cols="20" id="message" name="message"
-                            placeholder="Enter your message, and if it is a media file, please include the URL to the file."
-                            required></textarea>
+                            placeholder="Enter your message here, you can also enter urls."></textarea>
                         <br>
                     </div>
-                    <p class="text-danger">
-                        to upload files, you can upload it on <a href="https://ufile.io" target="_blank">ufile.io</a> or <a
-                            href="https://oshi.at/" target="_blank">oshi.at</a> and drop the link in
-                        the message
-                    </p>
                 </div>
 
                 <div class="row m-3">
-                    <button class="submit-button p-3 btn btn-dark" type="submit" id="submit-button">Send
+                    <p class="mt-4">
+                        Choose/Drag and Drop files to be sent (optional) (upto 10MB):
+                    </p>
+                    <input class="col-12 col-lg-12 col-md-12 col-sm-12 p-2 mb-3 hoverEffect form-control form-control-lg uploadFile" type="file" id="uploadFile" name="uploadFile" multiple autocomplete="off">
+                    <p class="text-danger">
+                        for files larger than 10MB, you can upload it on <a href="https://ufile.io" target="_blank">ufile.io</a> or <a
+                            href="https://oshi.at/" target="_blank">oshi.at</a> and drop the link in
+                        the message.
+                    </p>
+                </div>
+
+                <div class="">
+                    <ul id="uploadFileList" class="row m-3"></ul>
+                </div>
+
+                <div class="row m-3">
+                    <button class="submit-button mt-3 p-3 btn btn-dark" type="submit" id="submit-button">Send
                         Message</button>
                 </div>
             </form>
