@@ -1,3 +1,8 @@
+:root {
+  --bs-body-bg: var(--bs-dark);
+  --bs-body-color: white;
+}
+
 .textInputFields {
   border: none;
   outline: none;
@@ -24,4 +29,8 @@
 
 .submit-button {
   border: 1px solid white;
+}
+
+.uploadFile::file-selector-button {
+  color: black;
 }
