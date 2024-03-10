@@ -103,11 +103,12 @@ async function sendMessage() {
     if (respJson.hasOwnProperty("error")) {
       responsesList.push("Error in text: " + respJson["error"]);
     }
-    if (respJson["status"] != "success") {
+    else if (respJson["status"] != "success") {
       responsesList.push("Error in text: UNKNOWN ERROR");
     }
-    responsesList.push("Message: SUCCESS");
-    
+    else {
+      responsesList.push("Message: SUCCESS");
+    }
 
     if (listOfSelectedFiles.length === 0) {
       showFinalOutput(responsesList);
