@@ -9,6 +9,14 @@ function showModal(status) {
 
 let listOfSelectedFiles = []
 
+function clearFiles() {
+  listOfSelectedFiles = [];
+  inputFilesElement = document.getElementById("uploadFile");
+  inputFilesElement.value = "";
+  console.log(inputFilesElement.files);
+  listSelectedFiles();
+}
+
 function listSelectedFiles() {
   listElement = document.getElementById("uploadFileList");
   inputFilesElement = document.getElementById("uploadFile");
@@ -56,7 +64,13 @@ function listSelectedFiles() {
     warningText = document.createElement("p");
     warningText.setAttribute("class","text-danger");
     warningText.textContent = "Note that it will take sometime to forward your file after upload progress is 100%. So please don't close this tab until you get status."
-    listElement.appendChild(warningText)
+    removeButton = document.createElement("button");
+    removeButton.setAttribute("class","btn btn-secondary col-4 col-md-2 mt-3 mb-3 offset-4 offset-md-5");
+    removeButton.textContent = "clear";
+    removeButton.addEventListener("click",clearFiles);
+
+    listElement.appendChild(removeButton);
+    listElement.appendChild(warningText);
   }
 }
 
@@ -176,4 +190,4 @@ function showFinalOutput(outList) {
 
 listElement = document.getElementById("uploadFile");
 listElement.addEventListener("change",listSelectedFiles);
-listSelectedFiles()
+listSelectedFiles();
