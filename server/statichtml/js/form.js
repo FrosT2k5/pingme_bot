@@ -8,6 +8,9 @@ function showModal(status) {
 }
 
 let listOfSelectedFiles = []
+const hostName = window.location.origin;
+let noOfFilesSent = 0;
+let responsesList = []
 
 function clearFiles() {
   listOfSelectedFiles = [];
@@ -15,6 +18,12 @@ function clearFiles() {
   inputFilesElement.value = "";
   console.log(inputFilesElement.files);
   listSelectedFiles();
+}
+
+function clearMessageInput() {
+  let messageForm = document.forms["messageForm"];
+  let message = messageForm["message"];
+  message.value = ""
 }
 
 function listSelectedFiles() {
@@ -75,13 +84,49 @@ function listSelectedFiles() {
   }
 }
 
+function makeRequest(currentFileObject, formData) {
+  const xhr = new XMLHttpRequest();
+
+  xhr.upload.addEventListener("progress", (event) => {
+
+    if (event.lengthComputable) {
+      const uploadProgress = Math.floor(event.loaded / event.total) * 100;
+      currentFileObject.progressBar.style.width = `${uploadProgress}%`;
+    }
+  });
+
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      noOfFilesSent++;
+      response = xhr.responseText;
+      response = JSON.parse(response);
+      if (response.hasOwnProperty("error")) {
+        responsesList.push(`Error in file ${currentFileObject.file.name}: ` + response["error"]);
+      }
+      else if (response["status"] != "success") {
+        responsesList.push(`Error in file ${currentFileObject.file.name}: Unknown Error.`);
+      }
+      else {
+        responsesList.push(`File ${currentFileObject.file.name}: SUCCESS`);
+      }
+    }
+
+    if (noOfFilesSent === listOfSelectedFiles.length) {
+      showFinalOutput(responsesList);
+    }
+  };
+
+  xhr.open("POST", hostName + "/api/sendfile");
+  xhr.send(formData);
+}
+
 async function sendMessage() {
-  const hostName = window.location.origin;
   let messageForm = document.forms["messageForm"];
   let username = messageForm["telegramUsername"].value;
   let message = messageForm["message"].value;
   let key = parseInt(messageForm["securityKey"].value);
-  let responsesList = []
+  noOfFilesSent = 0; // Unset noOfFilesSent
+  responsesList = [];
 
   if (message === "" && listOfSelectedFiles.length === 0) {
     showModal("Please enter a message or select a file");
@@ -131,7 +176,7 @@ async function sendMessage() {
   }
 
   if (listOfSelectedFiles !== 0) {
-    let i = 0;
+    
     for (fileObject of listOfSelectedFiles) {
       
       let formData = new FormData();
@@ -139,44 +184,8 @@ async function sendMessage() {
       formData.append("username", username);
       formData.append("securitykey", key);
       fileObject.progressBar.style.width = "0%";
-      
-      function makeRequest(currentFileObject) {
-        const xhr = new XMLHttpRequest();
 
-        xhr.upload.addEventListener("progress", (event) => {
-  
-          if (event.lengthComputable) {
-            const uploadProgress = Math.floor(event.loaded / event.total) * 100;
-            currentFileObject.progressBar.style.width = `${uploadProgress}%`;
-          }
-        });
-  
-        xhr.onreadystatechange = () => {
-          if (xhr.readyState === XMLHttpRequest.DONE) {
-            i++;
-            response = xhr.responseText;
-            response = JSON.parse(response);
-            if (response.hasOwnProperty("error")) {
-              responsesList.push(`Error in file ${currentFileObject.file.name}: ` + response["error"]);
-            }
-            else if (response["status"] != "success") {
-              responsesList.push(`Error in file ${currentFileObject.file.name}: Unknown Error.`);
-            }
-            else {
-              responsesList.push(`File ${currentFileObject.file.name}: SUCCESS`);
-            }
-          }
-  
-          if (i === listOfSelectedFiles.length) {
-            showFinalOutput(responsesList);
-          }
-        };
-  
-        xhr.open("POST", hostName + "/api/sendfile");
-        xhr.send(formData);
-      }
-  
-      makeRequest(fileObject);
+      makeRequest(fileObject, formData);
     }
   }
 }
@@ -187,6 +196,10 @@ function showFinalOutput(outList) {
     finalOutput += responseText + "<br>";
   }
   showModal(finalOutput);
+  clearFiles();
+  clearMessageInput();
+  noOfFilesSent = 0; // Unset noOfFilesSent
+  responsesList = [];
 }
 
 listElement = document.getElementById("uploadFile");
