@@ -86,6 +86,7 @@ function listSelectedFiles() {
 
 function makeRequest(currentFileObject, formData) {
   const xhr = new XMLHttpRequest();
+  let isError = false;
 
   xhr.upload.addEventListener("progress", (event) => {
 
@@ -102,9 +103,11 @@ function makeRequest(currentFileObject, formData) {
       response = JSON.parse(response);
       if (response.hasOwnProperty("error")) {
         responsesList.push(`Error in file ${currentFileObject.file.name}: ` + response["error"]);
+        isError = true;
       }
       else if (response["status"] != "success") {
         responsesList.push(`Error in file ${currentFileObject.file.name}: Unknown Error.`);
+        isError = true;
       }
       else {
         responsesList.push(`File ${currentFileObject.file.name}: SUCCESS`);
@@ -112,7 +115,7 @@ function makeRequest(currentFileObject, formData) {
     }
 
     if (noOfFilesSent === listOfSelectedFiles.length) {
-      showFinalOutput(responsesList);
+      showFinalOutput(responsesList, isError);
     }
   };
 
@@ -125,6 +128,7 @@ async function sendMessage() {
   let username = messageForm["telegramUsername"].value;
   let message = messageForm["message"].value;
   let key = parseInt(messageForm["securityKey"].value);
+  let isError = false;
   noOfFilesSent = 0; // Unset noOfFilesSent
   responsesList = [];
 
@@ -162,16 +166,18 @@ async function sendMessage() {
     let respJson = await query.json();
     if (respJson.hasOwnProperty("error")) {
       responsesList.push("Error in text: " + respJson["error"]);
+      isError = true;
     }
     else if (respJson["status"] != "success") {
       responsesList.push("Error in text: UNKNOWN ERROR");
+      isError = true;
     }
     else {
       responsesList.push("Message: SUCCESS");
     }
 
     if (listOfSelectedFiles.length === 0) {
-      showFinalOutput(responsesList);
+      showFinalOutput(responsesList, isError);
     }
   }
 
@@ -190,14 +196,16 @@ async function sendMessage() {
   }
 }
 
-function showFinalOutput(outList) {
+function showFinalOutput(outList, isError=false) {
   let finalOutput = "";
   for (responseText of outList) {
     finalOutput += responseText + "<br>";
   }
   showModal(finalOutput);
-  clearFiles();
-  clearMessageInput();
+  if (!isError) {
+    clearFiles();
+    clearMessageInput();
+  }
   noOfFilesSent = 0; // Unset noOfFilesSent
   responsesList = [];
 }
