@@ -70,10 +70,11 @@ async def send_file(file: Annotated[UploadFile, File()], username: Annotated[str
 
     file_content = await file.read()
     file_size = file.file.tell()
+    file_size_limit = 50 # tdlib has limit of 50MB for botapi
 
-    if (file_size/1024/1024) > 10:
+    if (file_size/1024/1024) > file_size_limit:
         response.status_code = status.HTTP_413_REQUEST_ENTITY_TOO_LARGE
-        return {"status": "error","error": "Filesize is larger than 10MB"}
+        return {"status": "error","error": f"Filesize is larger than {file_size_limit}MB"}
 
     if uid == 0:
         response.status_code = status.HTTP_404_NOT_FOUND

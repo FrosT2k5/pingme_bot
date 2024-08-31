@@ -27,6 +27,7 @@ function listSelectedFiles() {
   };
   
   const fileList = inputFilesElement.files
+  const fileSizeLimit = 50;
 
   if (fileList.length === 0) {
     ;
@@ -35,8 +36,8 @@ function listSelectedFiles() {
 
       fileSize = (file.size/1024/1024).toPrecision(2);
 
-      if (fileSize > 10) {
-        showModal("Please select files below 10MB.");
+      if (fileSize > fileSizeLimit) {
+        showModal(`Please select files below ${fileSizeLimit}MB.`);
         continue;
       }
       const listItem = document.createElement("li");
