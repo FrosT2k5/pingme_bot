@@ -8,12 +8,12 @@ https://t.me/pingmeclient_bot
 Note: You need to set up your telegram account's username to use this bot
 1. First start the above bot in telegram
 2. Set up a 4 digit security key in the bot
-3. That's it, whenever you need to message yourself, goto https://pingme.tabcat.live/ and write your message along with telegram username & security pin. If your credentials are correct then message will be sent to you asap
+3. That's it, whenever you need to message yourself, goto https://pingme.developer.li/ and write your message along with telegram username & security pin. If your credentials are correct then message will be sent to you asap
 
 # API 
 You can use the api to send yourself message via a simple HTTP POST request from anywhere
 
-Check out docs at: https://pingme.tabcat.live/docs
+Check out docs at: https://pingme.developer.li/docs
 
 
 # Credits
